@@ -123,3 +123,5 @@ python main.py
 ```
 
 Uma janela do matplotlib será aberta mostrando o gráfico de temperatura em tempo real.
+
+Feito por Ana Beatriz Schuindt, na disciplina de Microcontroladores no período 25/2.
