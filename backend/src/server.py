@@ -7,22 +7,22 @@ from fastapi.middleware.cors import CORSMiddleware
 import paho.mqtt.client as mqtt
 
 # ====== CONFIG MQTT ======
-MQTT_SERVER = "localhost"          # como o Mosquitto roda no mesmo notebook
+MQTT_SERVER = "localhost"          
 MQTT_PORT = 1883
 MQTT_TOPIC = "sensores/temperatura/lm35"
 
 # ====== ARMAZENAMENTO EM MEMÓRIA ======
 max_pontos = 200
-dados = deque(maxlen=max_pontos)   # cada item: {"t": ..., "temp": ...}
+dados = deque(maxlen=max_pontos)
 start_time = time.time()
 
 # ====== FASTAPI ======
 app = FastAPI()
 
-# CORS liberado para facilitar o acesso do React
+# CORS - acesso do React
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],           # se quiser, depois pode restringir
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -48,7 +48,7 @@ client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
 client.connect(MQTT_SERVER, MQTT_PORT, 60)
-client.loop_start()   # roda o loop MQTT em thread separada
+client.loop_start()
 
 # ====== ROTAS DA API ======
 @app.get("/data")
