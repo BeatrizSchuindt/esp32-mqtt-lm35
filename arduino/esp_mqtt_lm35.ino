@@ -6,7 +6,7 @@ const char* ssid     = "Galaxy S25 Ultra D43D";
 const char* password = "87654321";      
 
 // ======= CONFIG MQTT =======
-const char* mqtt_server = "10.68.17.102"; // IP do SEU PC (IPV4 do ipconfig)
+const char* mqtt_server = "10.68.17.102";
 const int   mqtt_port   = 1883;
 const char* mqtt_topic  = "sensores/temperatura/lm35";
 
@@ -14,9 +14,9 @@ WiFiClient espClient;
 PubSubClient client(espClient);
 
 // ======= LM35 =======
-const int lm35Pin = 1;          // IO1 - Pino 1 do ESP32
+const int lm35Pin = 1;
 unsigned long lastMsg = 0;
-const long intervalo = 2000;    // 2 segundos
+const long intervalo = 2000;
 
 // Conexão WIFI - ESP32
 void setup_wifi() {
@@ -39,14 +39,12 @@ void setup_wifi() {
 }
 
 void reconnect() {
-  // Loop até conectar
   while (!client.connected()) {
     Serial.print("Tentando conectar ao MQTT... ");
 
     String clientId = "ESP32-LM35-";
     clientId += String(random(0xffff), HEX);
 
-    // Tentativa de conexão MQTT
     if (client.connect(clientId.c_str())) {
       Serial.println("conectado!");
     } else {
@@ -77,12 +75,11 @@ void loop() {
   if (now - lastMsg > intervalo) {
     lastMsg = now;
 
-    // Leitura e Cálculo da temperatura via mV
+    // cálculo da temperatura via mV
     int leitura = analogRead(lm35Pin);
     float tensao = (leitura * 3.3) / 4095.0;
     float tempC  = tensao * 100.0;
 
-    // Logs - Serial
     Serial.print("Temp: ");
     Serial.print(tempC, 2);
     Serial.println(" °C (enviando via MQTT)");
